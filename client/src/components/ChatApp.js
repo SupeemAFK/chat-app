@@ -11,6 +11,7 @@ import socket from '../services/socket'
 
 export default function ChatApp() {
   const [message, setMessage] = useState("")
+  const [isOpenSidebar, setIsOpenSidebar] = useState(false)
   const [messageList, setMessageList] = useState([])
   const [users, setUsers] = useState([])
 
@@ -50,8 +51,8 @@ export default function ChatApp() {
 
   return (
     <form onSubmit={handleOnSubmit}>
-      <Navbar room={room}/>
-      <div className="w-40 h-screen fixed top-0 left-0 bg-indigo-400 shadow-md text-white z-[-1] py-20 flex flex-col items-center invisible sm:visible">
+      <Navbar isOpenSidebar={isOpenSidebar} setIsOpenSidebar={setIsOpenSidebar} room={room}/>
+      <div className={`${isOpenSidebar ? "left-0" : "left-[-100%]"} transition-all delay-200 w-40 h-screen fixed top-0 bg-indigo-400 shadow-md text-white z-[-1] py-20 flex flex-col items-center sm:left-0`}>
         <div className="flex flex-col items-center">
           <h1 className="flex items-center mb-2"><FaUsers className="mr-2" />USERS</h1>
           {users.map(user => <p key={user.socketId}>{user.username}</p>)}

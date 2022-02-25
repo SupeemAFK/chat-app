@@ -4,7 +4,7 @@ import { SiGoogleclassroom } from 'react-icons/si'
 import { useNavigate } from 'react-router-dom';
 import socket from '../services/socket'
 
-export default function Navbar({ room }) {
+export default function Navbar({ isOpenSidebar, setIsOpenSidebar, room }) {
   const navigate = useNavigate()
 
   function leaveRoom() {
@@ -14,7 +14,7 @@ export default function Navbar({ room }) {
 
   return (
     <div className="w-full h-12 bg-indigo-600 flex justify-between items-center px-5 shadow-md">
-      <div className="flex justify-center items-center text-white text-xl">
+      <div onClick={() => setIsOpenSidebar(!isOpenSidebar)} className="flex justify-center items-center text-white text-xl">
         <SiGoogleclassroom className="mr-2" />
         <h1 className="font-bold">{room}</h1>
       </div>      

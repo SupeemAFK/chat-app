@@ -1,9 +1,7 @@
-const express = require('express');
 const server = require('http').createServer();
 const io = require('socket.io')(server, {
     cors: {
-        origin: "http://localhost:3000",
-        methods: ["GET", "POST", "PUT", "DELETE"]
+      origin: '*',
     }
 });
 const moment = require('moment');
@@ -41,9 +39,9 @@ function run() {
         })
     });
 
-    const PORT = process.env.PORT ||5000;
+    const PORT = process.env.PORT || 5000;
     server.listen(PORT, () => {
-        console.log(`server is running on http://localhost:${5000}`);
+        console.log(`server is running on http://localhost:${PORT}`);
     });
 }
 
