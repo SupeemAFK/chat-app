@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { useSearchParams } from 'react-router-dom';
 import { FaUsers } from 'react-icons/fa'
 import { FiSend } from 'react-icons/fi'
@@ -14,6 +14,7 @@ export default function ChatApp() {
   const [isOpenSidebar, setIsOpenSidebar] = useState(false)
   const [messageList, setMessageList] = useState([])
   const [users, setUsers] = useState([])
+  const messagesEndRef = useRef(null)
 
   const [searchParams] = useSearchParams();
   const username = searchParams.get("username");
@@ -49,10 +50,18 @@ export default function ChatApp() {
     setMessage("")
   }
 
+  useEffect(() => {
+    scrollToBottom()
+  }, [messageList])
+
+  function scrollToBottom() {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" })
+  }
+
   return (
     <form onSubmit={handleOnSubmit}>
       <Navbar isOpenSidebar={isOpenSidebar} setIsOpenSidebar={setIsOpenSidebar} room={room}/>
-      <div className={`${isOpenSidebar ? "translate-x-0	" : "translate-x-[-100%]"} transition-all duration-200 w-40 h-screen fixed top-0 bg-indigo-400 shadow-md text-white z-[-1] py-20 flex flex-col items-center sm:left-0`}>
+      <div className={`${isOpenSidebar ? "translate-x-0	" : "translate-x-[-100%]"} sm:translate-x-0 transition-all duration-200 w-40 h-screen fixed top-0 bg-indigo-400 shadow-md text-white z-[-1] py-20 flex flex-col items-center`}>
         <div className="flex flex-col items-center">
           <h1 className="flex items-center mb-2"><FaUsers className="mr-2" />USERS</h1>
           {users.map(user => <p key={user.socketId}>{user.username}</p>)}
@@ -73,6 +82,7 @@ export default function ChatApp() {
           return <ReceiveMessage key={message.id} message={message.message} username={message.user.username} time={message.time} />
           })
         }
+        <div ref={messagesEndRef} />
       </div>
     </form>
   )
